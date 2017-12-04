@@ -18,7 +18,10 @@
 <!-- 2.配置 性能拦截器 -->
 	<import resource="performance.xml"/>
 <!-- 3.配置 Bean -->
-	<import resource="beans.xml"/>
+	<!-- 3.1.手工配置 -->
+	<!-- <import resource="beans.xml"/> -->
+	<!-- 3.2.扫描注解 -->
+	<import resource="beansAnnotion.xml"/>
 <!-- 4.配置 数据库dataSource类型为druid -->
 	<import resource="druid.xml"/>
 <!-- 5.配置 mybatis -->
@@ -26,7 +29,7 @@
 <!-- 6.配置 springSchedule -->
 	<!-- <import resource="springSchedule.xml"/> -->
 <!-- 7.配置 spring事务 -->
-	<import resource="tx.xml"/>
+	<!-- <import resource="tx.xml"/> -->
 <!-- 8.配置 quartz-->
 	<!-- <import resource="quartz.xml"/> -->
 <!-- 9.配置 quartz集群-->

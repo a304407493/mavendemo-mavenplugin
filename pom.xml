@@ -21,6 +21,20 @@
 		<servlet.version>2.5</servlet.version>
 		<!-- jetty版本 -->
 		<jetty.version>9.2.8.v20150217</jetty.version>
+		<!-- jetty端口号 -->
+		<jetty.port>8081</jetty.port>
+		<!-- jetty是否热部署0代表关闭大于0开启 -->
+		<jetty.scanIntervalSeconds>2</jetty.scanIntervalSeconds>
+		<!-- jetty关闭端口号 -->
+		<jetty.stopPort>9966</jetty.stopPort>
+		
+		<!-- tomcat版本 -->
+		<tomcat.version>1.1</tomcat.version>
+		<!-- tomcat端口号 -->
+		<tomcat.port>8080</tomcat.port>
+		<!-- tomcat的uriEncoding编码 -->
+		<tomcat.uriEncoding>UTF-8</tomcat.uriEncoding>
+		
 		<!-- spring版本-->
 		<spring.version>3.2.0.RC1</spring.version>
 		<!-- jstl版本-->
@@ -60,6 +74,8 @@
 			<maven.plugin.sql.file.create>src/test/resources/sql/mysql/create/*.sql</maven.plugin.sql.file.create>
 			<!-- sql插件sql文件创建数据表  注意加数据库前缀 -->
 			<maven.plugin.sql.file.init>src/test/resources/sql/mysql/init/*.sql</maven.plugin.sql.file.init>
+			<!-- sql插件sql文件创建quartz数据表  注意加数据库前缀 -->
+			<maven.plugin.sql.file.quartz>src/test/resources/sql/mysql/quartz/*.sql</maven.plugin.sql.file.quartz>
 		<!-- 2.sql插件oracle相关配置 -->
 			<!-- 		
 			sql插件oracle驱动class
@@ -361,29 +377,28 @@
 		      	<configuration>
 		      		<!-- 配置启动端口号 -->
 					<httpConnector>
-					    <port>8081</port>
+					    <port>${jetty.port}</port>
 					</httpConnector>
 					<!-- 配置自动热部署0代表关闭大于0开启 -->
-					<scanIntervalSeconds>2</scanIntervalSeconds>
+					<scanIntervalSeconds>${jetty.scanIntervalSeconds}</scanIntervalSeconds>
 					<!-- localhost:端口号/下面内容 -->
 					<webApp>
 			          	<contextPath>/${project.artifactId}</contextPath>
 			        </webApp>
-
 			        <!-- 配置jetty停止命令 -->
 					<stopKey>shutdown</stopKey>
-  					<stopPort>9966</stopPort>
+  					<stopPort>${jetty.stopPort}</stopPort>
 		      	</configuration>
 		    </plugin>
 			<!-- tomcat插件：tomcat:run使用外置浏览器测试 -->
 		    <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>${tomcat.version}</version>
                 <configuration>
                     <path>/${project.artifactId}</path>
-                    <port>8080</port>
-                    <uriEncoding>UTF-8</uriEncoding>
+                    <port>${tomcat.port}</port>
+                    <uriEncoding>${tomcat.uriEncoding}</uriEncoding>
                     <!-- <url>http://localhost:8080/${project.artifactId}/</url> -->
                     <!-- <server>tomcat6</server> -->
                 </configuration>
@@ -491,6 +506,23 @@
 								<basedir>${basedir}</basedir>
 								<includes>
 									<include>${maven.plugin.sql.file.init}</include>
+								</includes>
+							</fileset>
+                        </configuration>
+                    </execution>
+                    <!-- 初始化quartz数据 -->
+                    <execution>
+                        <id>quartz-db</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <autocommit>true</autocommit>
+                            <fileset>
+								<basedir>${basedir}</basedir>
+								<includes>
+									<include>${maven.plugin.sql.file.quartz}</include>
 								</includes>
 							</fileset>
                         </configuration>

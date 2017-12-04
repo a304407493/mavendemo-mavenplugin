@@ -3,7 +3,8 @@ package com.mavendemo.mavenplugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.stereotype.Service;
+@Service("appService")
 public class AppService implements IAppService{
 //	private static Logger logger = Logger.getLogger(AppService.class);
     private final static Logger LOGGER =  LoggerFactory.getLogger(AppService.class);
